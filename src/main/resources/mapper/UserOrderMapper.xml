@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.shop.shoponline.mapper.UserOrderMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.shop.shoponline.entity.UserOrder">
+        <id column="id" property="id" />
+        <result column="user_id" property="userId" />
+        <result column="address_id" property="addressId" />
+        <result column="total_price" property="totalPrice" />
+        <result column="total_count" property="totalCount" />
+        <result column="total_freight" property="totalFreight" />
+        <result column="order_number" property="orderNumber" />
+        <result column="status" property="status" />
+        <result column="delivery_time_type" property="deliveryTimeType" />
+        <result column="buyer_message" property="buyerMessage" />
+        <result column="pay_type" property="payType" />
+        <result column="pay_channel" property="payChannel" />
+        <result column="cancel_reason" property="cancelReason" />
+        <result column="delete_flag" property="deleteFlag" />
+        <result column="create_time" property="createTime" />
+        <result column="update_time" property="updateTime" />
+        <result column="pay_time" property="payTime" />
+        <result column="consign_time" property="consignTime" />
+        <result column="arrival_estimated_time" property="arrivalEstimatedTime" />
+        <result column="end_time" property="endTime" />
+        <result column="close_time" property="closeTime" />
+    </resultMap>
+
+</mapper>
