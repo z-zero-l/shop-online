@@ -41,7 +41,7 @@ public class MybatisGen {
                 })
                 .packageConfig(builder -> {
                     builder.parent("com.shop") // 设置父包名
-                            .moduleName("shop") // 设置父包模块名
+                            .moduleName("shoponline") // 设置父包模块名
                             .pathInfo(outputFileStringMap);
                     // 设置mapperXml生成路径
                 })
