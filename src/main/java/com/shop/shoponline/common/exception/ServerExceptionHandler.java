@@ -1,6 +1,5 @@
 package com.shop.shoponline.common.exception;
 
-import com.shop.shoponline.common.result.ErrorCode;
 import com.shop.shoponline.common.result.Result;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.BindException;
@@ -8,26 +7,23 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+/* 全局异常处理 */
 @Slf4j
 @RestControllerAdvice
 public class ServerExceptionHandler {
 
-
     /**
      * 处理自定义异常
-     *
      * @param exception
-     * @return
+     * @return code,message
      */
     @ExceptionHandler(ServerException.class)
     public Result<String> handleException(ServerException exception) {
         return Result.error(exception.getCode(), exception.getMsg());
-
     }
 
     /**
      * 数据校验异常
-     *
      * @param exception
      * @return
      */
@@ -40,7 +36,6 @@ public class ServerExceptionHandler {
 
     /**
      * 其他异常情况
-     *
      * @param ex
      * @return
      */

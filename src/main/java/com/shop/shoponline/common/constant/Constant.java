@@ -1,5 +1,6 @@
 package com.shop.shoponline.common.constant;
 
+/* 基础常量声明 */
 public interface Constant {
     // 创建时间
     String CREATE_TIME = "createTime";

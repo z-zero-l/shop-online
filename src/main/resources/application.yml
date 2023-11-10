@@ -24,8 +24,6 @@ spring:
   jackson:
     date-format: yyyy-MM-dd HH:mm:ss
     time-zone: GMT+8
-
-
   data:
     redis:
       #redis数据库索引(默认为0)
@@ -43,7 +41,7 @@ knife4j:
   setting:
     language: zh_cn
 
-
+# MybatisPlus配置
 mybatis-plus:
   mapper-locations: classpath:/mapper/*Mapper.xml
   type-aliases-package: com.shop.shoponline.*.entity

@@ -12,8 +12,8 @@ import java.io.File;
 import java.util.*;
 
 public class MybatisGen {
-
     public static void main(String[] args) {
+        // java包地址
         String path = System.getProperty("user.dir")
                 .concat(File.separator).concat("src")
                 .concat(File.separator).concat("main")
@@ -22,12 +22,13 @@ public class MybatisGen {
                 .concat(File.separator).concat("shop")
                 .concat(File.separator).concat("shoponline")
                 .concat(File.separator);
+        // mapper映射文件生成路径
         String pathXml = System.getProperty("user.dir")
                 .concat(File.separator).concat("src")
                 .concat(File.separator).concat("main")
                 .concat(File.separator).concat("resources")
                 .concat(File.separator).concat("mapper");
-
+        // 生成包配置
         Map<OutputFile, String> outputFileStringMap = new HashMap<>();
         outputFileStringMap.put(OutputFile.controller, path + "controller");
         outputFileStringMap.put(OutputFile.service, path + "service");
@@ -35,6 +36,7 @@ public class MybatisGen {
         outputFileStringMap.put(OutputFile.entity, path + "entity");
         outputFileStringMap.put(OutputFile.mapper, path + "mapper");
         outputFileStringMap.put(OutputFile.xml, pathXml);
+        // 生成代码
         FastAutoGenerator.create("jdbc:mysql://localhost:3306/shop-online", "root", "root")
                 .globalConfig(builder -> {
                     builder.author("zero").enableSwagger(); // 设置作者 开启 swagger 模式

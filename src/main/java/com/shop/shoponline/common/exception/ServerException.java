@@ -1,9 +1,9 @@
 package com.shop.shoponline.common.exception;
 
-import com.shop.shoponline.common.result.ErrorCode;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+/* 自定义异常 */
 @Data
 @EqualsAndHashCode(callSuper = true)
 public class ServerException extends RuntimeException{
@@ -29,5 +29,4 @@ public class ServerException extends RuntimeException{
         this.code = ErrorCode.INTERNAL_SERVER_ERROR.getCode();
         this.msg = msg;
     }
-
 }
