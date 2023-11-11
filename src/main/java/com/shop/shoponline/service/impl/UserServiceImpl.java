@@ -16,6 +16,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.shop.shoponline.vo.LoginResultVO;
 import com.shop.shoponline.vo.UserTokenVO;
 
+import com.shop.shoponline.vo.UserVO;
 import lombok.AllArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
@@ -71,6 +72,26 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         String token = JWTUtils.generateToken(JWT_SECRET, tokenVO.toMap());
         redisService.set(APP_NAME + userVO.getId(), token, APP_TOKEN_EXPIRE_TIME);
         userVO.setToken(token);
+        return userVO;
+    }
+
+    @Override
+    public User getUserInfo(Integer userId) {
+        User user = baseMapper.selectById(userId);
+        if (user==null){
+            throw new ServerException("用户不存在");
+        }
+        return user;
+    }
+
+    @Override
+    public UserVO editUserInfo(UserVO userVO) {
+        User user = baseMapper.selectById((userVO.getId()));
+        if (user==null){
+            throw new ServerException("用户不存在");
+        }
+        User userConvert = UserConvert.INSTANCE.convert(userVO);
+        updateById(userConvert);
         return userVO;
     }
 }
