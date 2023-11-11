@@ -64,7 +64,6 @@ public class GoodsServiceImpl extends ServiceImpl<GoodsMapper, Goods> implements
             PageResult<RecommendGoodsVO> result = new PageResult<>(page.getTotal(), query.getPageSize(), query.getPage(), page.getPages(), goodsList);
             tabGoods.setGoodsItems(result);
             list.add(tabGoods);
-
         }
         IndexTabRecommendVO recommendVO = new IndexTabRecommendVO();
         recommendVO.setId(indexRecommend.getId());
@@ -79,23 +78,23 @@ public class GoodsServiceImpl extends ServiceImpl<GoodsMapper, Goods> implements
         Page<Goods> page = new Page<>(query.getPage(), query.getPageSize());
         Page<Goods> goodsPage = baseMapper.selectPage(page, null);
         List<RecommendGoodsVO> result = GoodsConvert.INSTANCE.convertToRecommendGoodsVOList(goodsPage.getRecords());
-        return new PageResult<>(page.getTotal(),query.getPageSize(),query.getPage(),page.getPages(),result);
+        return new PageResult<>(page.getTotal(), query.getPageSize(), query.getPage(), page.getPages(), result);
     }
 
     @Override
     public GoodsVO getGoodsDetail(Integer id) {
         Goods goods = baseMapper.selectById(id);
-        if (goods==null){
+        if (goods == null) {
             throw new ServerException("商品不存在");
         }
         GoodsVO goodsVO = GoodsConvert.INSTANCE.convertToGoodsVO(goods);
-        List<GoodsDetail> goodsDetails = goodsDetailMapper.selectList(new LambdaQueryWrapper<GoodsDetail>().eq(GoodsDetail::getGoodsId,goods.getId()));
+        List<GoodsDetail> goodsDetails = goodsDetailMapper.selectList(new LambdaQueryWrapper<GoodsDetail>().eq(GoodsDetail::getGoodsId, goods.getId()));
         goodsVO.setProperties(goodsDetails);
-        List<GoodsSpecification> specificationList = goodsSpecificationMapper.selectList(new LambdaQueryWrapper<GoodsSpecification>().eq(GoodsSpecification::getGoodsId,goods.getId()));
+        List<GoodsSpecification> specificationList = goodsSpecificationMapper.selectList(new LambdaQueryWrapper<GoodsSpecification>().eq(GoodsSpecification::getGoodsId, goods.getId()));
         goodsVO.setSpecs(specificationList);
         List<GoodsSpecificationDetail> goodsSpecificationDetails = goodsSpecificationDetailMapper.selectList(new LambdaQueryWrapper<GoodsSpecificationDetail>().eq(GoodsSpecificationDetail::getGoodsId, goods.getId()));
         goodsVO.setSkus(goodsSpecificationDetails);
-        List<Goods> goodsList=baseMapper.selectList(new LambdaQueryWrapper<Goods>().eq(Goods::getCategoryId,goods.getCategoryId()).ne(Goods::getId,goods.getId()));
+        List<Goods> goodsList = baseMapper.selectList(new LambdaQueryWrapper<Goods>().eq(Goods::getCategoryId, goods.getCategoryId()).ne(Goods::getId, goods.getId()));
         List<RecommendGoodsVO> goodsVOList = GoodsConvert.INSTANCE.convertToRecommendGoodsVOList(goodsList);
         goodsVO.setSimilarProducts(goodsVOList);
         return goodsVO;

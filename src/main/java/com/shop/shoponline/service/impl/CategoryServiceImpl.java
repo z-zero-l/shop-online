@@ -68,7 +68,6 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryMapper, Category> i
                 List<RecommendGoodsVO> goodsVOList = GoodsConvert.INSTANCE.convertToRecommendGoodsVOList(goodsList);
                 childrenGoodsVO.setGoods(goodsVOList);
                 categoryChildrenGoodsList.add(childrenGoodsVO);
-
             }
             categoryVO.setChildren(categoryChildrenGoodsList);
             list.add(categoryVO);
