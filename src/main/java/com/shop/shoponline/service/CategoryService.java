@@ -2,6 +2,7 @@ package com.shop.shoponline.service;
 
 import com.shop.shoponline.entity.Category;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.shop.shoponline.vo.CategoryVO;
 
 import java.util.List;
 
@@ -15,4 +16,5 @@ import java.util.List;
  */
 public interface CategoryService extends IService<Category> {
     List<Category> getIndexCategoryList();
+    List<CategoryVO> getCategoryList();
 }
