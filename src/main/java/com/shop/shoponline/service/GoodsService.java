@@ -2,6 +2,8 @@ package com.shop.shoponline.service;
 
 import com.shop.shoponline.entity.Goods;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.shop.shoponline.query.RecommendByTabGoodsQuery;
+import com.shop.shoponline.vo.IndexTabRecommendVO;
 
 /**
  * <p>
@@ -12,5 +14,5 @@ import com.baomidou.mybatisplus.extension.service.IService;
  * @since 2023-11-07
  */
 public interface GoodsService extends IService<Goods> {
-
+    IndexTabRecommendVO getTabRecommendGoodsByTabId(RecommendByTabGoodsQuery query);
 }
