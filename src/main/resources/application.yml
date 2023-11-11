@@ -33,7 +33,7 @@ spring:
       #redis服务器连接端口
       port: 6379
       #redis连接密码
-      password: root
+#      password:123456
 
 # knife4j的增强配置，不需要增强可以不配
 knife4j:

@@ -40,12 +40,12 @@ public class Result<T> {
         return error(ErrorCode.INTERNAL_SERVER_ERROR.getCode(), msg);
     }
 
-    // 失败 - 携带自定义code，msg
+    // 失败 - 携带自定义code，msg 对象传输
     public static <T> Result<T> error(ErrorCode errorCode) {
         return error(errorCode.getCode(), errorCode.getMsg());
     }
 
-    // 失败 - 携带自定义code，msg 以对象传输
+    // 失败 - 携带自定义code，msg
     public static <T> Result<T> error(int code, String msg) {
         Result<T> result = new Result<>();
         result.setCode(code);
