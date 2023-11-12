@@ -31,7 +31,7 @@ public class APIConstant {
     /**
      * 微信调用api接口返回错误code
      */
-    public static String WX_ERR_CODE = "errcode";
+    public static String WX_ERR_CODE = "errCode";
     /**
      * 微信调用api接口获取openid
      */

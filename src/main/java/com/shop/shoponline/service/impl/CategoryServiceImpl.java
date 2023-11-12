@@ -24,7 +24,7 @@ import java.util.List;
  * </p>
  *
  * @author zero
- * @since 2023-11-07
+ * @since 2023-11-11
  */
 @Service
 @AllArgsConstructor
@@ -34,8 +34,9 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryMapper, Category> i
 
     public List<Category> getIndexCategoryList() {
         LambdaQueryWrapper<Category> wrapper = new LambdaQueryWrapper<>();
-        //
-        wrapper.eq(Category::getIsRecommend, CategoryRecommendEnum.ALL_RECOMMEND.getValue());
+        // 查询首页和分类页都推荐的分类以及在首页推荐的分类
+        wrapper.eq(Category::getIsRecommend, CategoryRecommendEnum.ALL_RECOMMEND.getValue()).or().eq(Category::getIsRecommend, CategoryRecommendEnum.INDEX_RECOMMEND.getValue());
+        wrapper.orderByDesc(Category::getCreateTime);
         wrapper.orderByDesc(Category::getCreateTime);
         return baseMapper.selectList(wrapper);
     }
@@ -43,9 +44,11 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryMapper, Category> i
     @Override
     public List<CategoryVO> getCategoryList() {
         List<CategoryVO> list = new ArrayList<>();
+        // 1、查询配置在分类tab页上的父级分类
         LambdaQueryWrapper<Category> wrapper = new LambdaQueryWrapper<>();
         wrapper.eq(Category::getIsRecommend, CategoryRecommendEnum.ALL_RECOMMEND.getValue()).or().eq(Category::getIsRecommend, CategoryRecommendEnum.CATEGORY_HOME_RECOMMEND.getValue());
         List<Category> categories = baseMapper.selectList(wrapper);
+        // 2、查询该分类下的自己分类
         LambdaQueryWrapper<Goods> queryWrapper = new LambdaQueryWrapper<>();
         for (Category category : categories) {
             CategoryVO categoryVO = new CategoryVO();
@@ -56,6 +59,7 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryMapper, Category> i
             wrapper.eq(Category::getParentId, category.getId());
             List<Category> childCategories = baseMapper.selectList(wrapper);
             List<CategoryChildrenGoodsVO> categoryChildrenGoodsList = new ArrayList<>();
+            // 3、分类下的商品列表
             for (Category item : childCategories) {
                 CategoryChildrenGoodsVO childrenGoodsVO = new CategoryChildrenGoodsVO();
                 childrenGoodsVO.setId(item.getId());
@@ -72,7 +76,6 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryMapper, Category> i
             categoryVO.setChildren(categoryChildrenGoodsList);
             list.add(categoryVO);
         }
-
         return list;
     }
 }

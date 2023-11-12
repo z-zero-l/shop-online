@@ -6,30 +6,25 @@ import java.util.Map;
 
 public class JWTUtils {
 
-
     /**
      * 生成token
      *
      * @param secret
      * @param claims
-     * @return
+     * @return String
      */
     public static String generateToken(String secret, Map<String, Object> claims) {
-        String result = Jwts.builder()
+        return Jwts.builder()
                 .setClaims(claims)
                 .signWith(SignatureAlgorithm.HS256, secret)
                 .compact();
-        return result;
     }
-
 
     public static Map getClaims(String secret, String token) {
         try {
             Jws<Claims> claims = Jwts.parser().setSigningKey(secret).parseClaimsJws(token);
             return claims.getBody();
-        } catch (MissingClaimException e) {
-            e.printStackTrace();
-        } catch (IncorrectClaimException e) {
+        } catch (MissingClaimException | IncorrectClaimException e) {
             e.printStackTrace();
         }
         return null;

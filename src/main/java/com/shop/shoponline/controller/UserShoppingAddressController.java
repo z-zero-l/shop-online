@@ -6,6 +6,7 @@ import com.shop.shoponline.service.UserShoppingAddressService;
 import com.shop.shoponline.vo.AddressVO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.AllArgsConstructor;
 import org.springframework.validation.annotation.Validated;
@@ -29,10 +30,12 @@ import static com.shop.shoponline.common.utils.ObtainUserIdUtils.getUserId;
 @AllArgsConstructor
 public class UserShoppingAddressController {
     private final UserShoppingAddressService userShippingAddressService;
+    @Resource
+    private HttpServletRequest request;
 
     @Operation(summary = "添加收货地址")
     @PostMapping("address")
-    public Result<Integer> saveAddress(@RequestBody @Validated AddressVO addressVO, HttpServletRequest request) {
+    public Result<Integer> saveAddress(@RequestBody @Validated AddressVO addressVO) {
         Integer userId = getUserId(request);
         addressVO.setUserId(userId);
         Integer addressId = userShippingAddressService.saveShippingAddress(addressVO);

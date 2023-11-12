@@ -12,7 +12,7 @@ import java.util.concurrent.TimeUnit;
 
 /**
  * @description: RedisService实现类
- * @author: mqxu
+ * @author: zero
  * @create: 2020-12-05 20:33
  **/
 @Service
@@ -53,7 +53,6 @@ public class RedisServiceImpl implements RedisService {
     @Override
     public boolean existsKey(String key) {
         return redisTemplate.hasKey(key);
-
     }
 
     @Override
@@ -78,7 +77,6 @@ public class RedisServiceImpl implements RedisService {
         if (existsKey(key)) {
             redisTemplate.delete(key);
         }
-
     }
 
     @Override

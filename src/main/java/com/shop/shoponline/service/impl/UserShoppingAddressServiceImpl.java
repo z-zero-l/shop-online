@@ -1,6 +1,7 @@
 package com.shop.shoponline.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.shop.shoponline.common.exception.ServerException;
 import com.shop.shoponline.convert.AddressConvert;
 import com.shop.shoponline.entity.UserShoppingAddress;
@@ -10,6 +11,7 @@ import com.shop.shoponline.mapper.UserShoppingAddressMapper;
 import com.shop.shoponline.service.UserShoppingAddressService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.shop.shoponline.vo.AddressVO;
+import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -20,7 +22,7 @@ import java.util.List;
  * </p>
  *
  * @author zero
- * @since 2023-11-07
+ * @since 2023-11-12
  */
 @Service
 public class UserShoppingAddressServiceImpl extends ServiceImpl<UserShoppingAddressMapper, UserShoppingAddress> implements UserShoppingAddressService {
@@ -47,7 +49,7 @@ public class UserShoppingAddressServiceImpl extends ServiceImpl<UserShoppingAddr
         // 查询该用户是否存在默认地址
         if (addressVO.getIsDefault().equals(AddressDefaultEnum.DEFAULT_ADDRESS.getValue())) {
             LambdaQueryWrapper<UserShoppingAddress> wrapper = new LambdaQueryWrapper<>();
-//            wrapper.eq(UserShoppingAddress::getUserId, AddressDefaultEnum.DEFAULT_ADDRESS.getValue());
+            wrapper.eq(UserShoppingAddress::getUserId, AddressDefaultEnum.DEFAULT_ADDRESS.getValue());
             wrapper.eq(UserShoppingAddress::getUserId, addressVO.getUserId());
             UserShoppingAddress address = baseMapper.selectOne(wrapper);
             // 如果存在 更新之前默认地址
@@ -85,14 +87,11 @@ public class UserShoppingAddressServiceImpl extends ServiceImpl<UserShoppingAddr
 
     @Override
     public Integer deleteShippingAddress(Integer id) {
-//        LambdaUpdateWrapper<UserShoppingAddress> wrapper = new LambdaUpdateWrapper<>();
-//        wrapper.eq(UserShoppingAddress::getId, id).set(UserShoppingAddress::getDeleteFlag, DeleteFlagEnum.DELETE_FLAG.getValue());
-//        System.out.println(DeleteFlagEnum.DELETE_FLAG.getValue());
-        LambdaQueryWrapper<UserShoppingAddress> wrapper = new LambdaQueryWrapper<>();
-        wrapper.eq(UserShoppingAddress::getId, id);
-        UserShoppingAddress address = baseMapper.selectOne(wrapper);
-        address.setDeleteFlag(DeleteFlagEnum.OPEN_DELETE_FLAG.getValue());
-        updateById(address);
-        return address.getId();
+//        UpdateWrapper<UserShoppingAddress> updateWrapper = new UpdateWrapper<>();
+//        updateWrapper.lambda().set(UserShoppingAddress::getIsDefault, AddressDefaultEnum.NOT_DEFAULT_ADDRESS.getValue()).set(UserShoppingAddress::getDeleteFlag, DeleteFlagEnum.OPEN_DELETE_FLAG.getValue()).eq(UserShoppingAddress::getId, id);
+//        update(updateWrapper);
+
+        Integer i = baseMapper.deleteById(id);
+        return id;
     }
 }

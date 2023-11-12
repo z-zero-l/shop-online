@@ -32,8 +32,7 @@ public class UserTokenVO {
         map.put("loginAt", this.loginAt);
         return map;
     }
-
-
+    
     public UserTokenVO fromMap(Map map) {
         UserTokenVO userToken = new UserTokenVO();
         userToken.expires = Long.parseLong(String.valueOf(map.get("expires")));

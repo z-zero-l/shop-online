@@ -14,8 +14,7 @@ import java.util.List;
 @Mapper
 public interface GoodsConvert {
     GoodsConvert INSTANCE = Mappers.getMapper(GoodsConvert.class);
-
-
+    
     @Mapping(expression = "java(MapStruct.strToList(goods.getProductPictures()))", target = "productPictures")
     @Mapping(expression = "java(MapStruct.strToList(goods.getMainPictures()))", target = "mainPictures")
     GoodsVO convertToGoodsVO(Goods goods);

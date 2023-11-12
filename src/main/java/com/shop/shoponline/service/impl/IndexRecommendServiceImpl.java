@@ -13,11 +13,11 @@ import java.util.List;
 
 /**
  * <p>
- *  服务实现类
+ * 服务实现类
  * </p>
  *
  * @author zero
- * @since 2023-11-07
+ * @since 2023-11-11
  */
 @Service
 public class IndexRecommendServiceImpl extends ServiceImpl<IndexRecommendMapper, IndexRecommend> implements IndexRecommendService {
@@ -27,7 +27,6 @@ public class IndexRecommendServiceImpl extends ServiceImpl<IndexRecommendMapper,
         LambdaQueryWrapper<IndexRecommend> wrapper = new LambdaQueryWrapper<>();
         wrapper.orderByDesc(IndexRecommend::getCreateTime);
         List<IndexRecommend> list = baseMapper.selectList(wrapper);
-        List<IndexRecommendVO> results = IndexRecommendConvert.INSTANCE.convertToUserVoList(list);
-        return results;
+        return IndexRecommendConvert.INSTANCE.convertToUserVoList(list);
     }
 }

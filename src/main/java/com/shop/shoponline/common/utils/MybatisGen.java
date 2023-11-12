@@ -14,11 +14,10 @@ import java.util.*;
 public class MybatisGen {
     public static void main(String[] args) {
         // java包地址
-        String path = System.getProperty("user.dir")
-                .concat(File.separator).concat("src")
-                .concat(File.separator).concat("main")
-                .concat(File.separator).concat("java")
-                .concat(File.separator).concat("com")
+        String path = System.getProperty("user.dir").concat(File.separator)
+                .concat("src").concat(File.separator)
+                .concat("main").concat(File.separator)
+                .concat("java").concat(File.separator).concat("com")
                 .concat(File.separator).concat("shop")
                 .concat(File.separator).concat("shoponline")
                 .concat(File.separator);

@@ -39,7 +39,7 @@ import static com.shop.shoponline.constant.APIConstant.*;
  * </p>
  *
  * @author zero
- * @since 2023-11-07
+ * @since 2023-11-11
  */
 @Service
 @AllArgsConstructor
@@ -65,6 +65,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         // 2、解析返回的数据
         JSONObject jsonObject = JSON.parseObject(openIdResult);
         String openId = jsonObject.getString(WX_OPENID);
+        // 查询用户信息
         User user = baseMapper.selectOne(new LambdaQueryWrapper<User>().eq(User::getOpenId, openId));
         // 3、判断用户是否存在，如果用户不存在，直接注册新用户
         if (user == null) {
@@ -75,15 +76,15 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
             user.setNickname(account);
             user.setOpenId(openId);
             user.setMobile("''");
-            baseMapper.insert(user);
+            baseMapper.insert(user);// 新用户
         }
-        LoginResultVO userVO = UserConvert.INSTANCE.convertToLoginResultVO(user);
+        LoginResultVO loginVO = UserConvert.INSTANCE.convertToLoginResultVO(user);
         // 4、生成token，存入redis并设置过期时间
-        UserTokenVO tokenVO = new UserTokenVO(userVO.getId());
+        UserTokenVO tokenVO = new UserTokenVO(loginVO.getId());
         String token = JWTUtils.generateToken(JWT_SECRET, tokenVO.toMap());
-        redisService.set(APP_NAME + userVO.getId(), token, APP_TOKEN_EXPIRE_TIME);
-        userVO.setToken(token);
-        return userVO;
+        redisService.set(APP_NAME + loginVO.getId(), token, APP_TOKEN_EXPIRE_TIME);
+        loginVO.setToken(token);
+        return loginVO;
     }
 
     @Override
@@ -132,7 +133,6 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         ossClient.putObject(fileResource.getBucketName(), uploadFileName, inputStream);
         // 关闭OSSClient
         ossClient.shutdown();
-
         // 修改用户头像
         User user = baseMapper.selectById(userId);
         if (user == null) {

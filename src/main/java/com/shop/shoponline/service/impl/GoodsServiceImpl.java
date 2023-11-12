@@ -27,11 +27,12 @@ import java.util.List;
  * </p>
  *
  * @author zero
- * @since 2023-11-07
+ * @since 2023-11-11
  */
 @Service
 @AllArgsConstructor
 public class GoodsServiceImpl extends ServiceImpl<GoodsMapper, Goods> implements GoodsService {
+
     private final IndexRecommendMapper indexRecommendMapper;
     private final IndexRecommendTabMapper indexRecommendTabMapper;
     private final GoodsDetailMapper goodsDetailMapper;
@@ -83,17 +84,22 @@ public class GoodsServiceImpl extends ServiceImpl<GoodsMapper, Goods> implements
 
     @Override
     public GoodsVO getGoodsDetail(Integer id) {
+        // 根据id获取商品详情
         Goods goods = baseMapper.selectById(id);
         if (goods == null) {
             throw new ServerException("商品不存在");
         }
         GoodsVO goodsVO = GoodsConvert.INSTANCE.convertToGoodsVO(goods);
+        // 商品规格
         List<GoodsDetail> goodsDetails = goodsDetailMapper.selectList(new LambdaQueryWrapper<GoodsDetail>().eq(GoodsDetail::getGoodsId, goods.getId()));
         goodsVO.setProperties(goodsDetails);
+        // 商品可选规格集合
         List<GoodsSpecification> specificationList = goodsSpecificationMapper.selectList(new LambdaQueryWrapper<GoodsSpecification>().eq(GoodsSpecification::getGoodsId, goods.getId()));
         goodsVO.setSpecs(specificationList);
+        // 商品规格详情
         List<GoodsSpecificationDetail> goodsSpecificationDetails = goodsSpecificationDetailMapper.selectList(new LambdaQueryWrapper<GoodsSpecificationDetail>().eq(GoodsSpecificationDetail::getGoodsId, goods.getId()));
         goodsVO.setSkus(goodsSpecificationDetails);
+        // 查找同类商品,去除自身
         List<Goods> goodsList = baseMapper.selectList(new LambdaQueryWrapper<Goods>().eq(Goods::getCategoryId, goods.getCategoryId()).ne(Goods::getId, goods.getId()));
         List<RecommendGoodsVO> goodsVOList = GoodsConvert.INSTANCE.convertToRecommendGoodsVOList(goodsList);
         goodsVO.setSimilarProducts(goodsVOList);

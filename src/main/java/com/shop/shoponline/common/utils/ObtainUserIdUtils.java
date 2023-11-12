@@ -1,6 +1,5 @@
 package com.shop.shoponline.common.utils;
 
-
 import com.shop.shoponline.common.exception.ServerException;
 import jakarta.servlet.http.HttpServletRequest;
 

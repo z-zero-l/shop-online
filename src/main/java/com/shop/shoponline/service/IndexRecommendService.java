@@ -8,12 +8,17 @@ import java.util.List;
 
 /**
  * <p>
- *  服务类
+ * 服务类
  * </p>
  *
  * @author zero
- * @since 2023-11-07
+ * @since 2023-11-11
  */
 public interface IndexRecommendService extends IService<IndexRecommend> {
+    /**
+     * 首页-热门推荐
+     *
+     * @return list
+     */
     List<IndexRecommendVO> getList();
 }

@@ -14,17 +14,18 @@ import java.util.List;
 
 /**
  * <p>
- *  前端控制器
+ * 前端控制器
  * </p>
  *
  * @author zero
- * @since 2023-11-07
+ * @since 2023-11-11
  */
-@Tag(name = "首页管理")
+@Tag(name = "推荐管理")
 @RestController
-@RequestMapping("/shoponline/indexRecommend")
+@RequestMapping("home")
 @AllArgsConstructor
 public class IndexRecommendController {
+
     private final IndexRecommendService indexRecommendService;
 
     @Operation(summary = "首页-热门推荐")
@@ -32,6 +33,5 @@ public class IndexRecommendController {
     public Result<List<IndexRecommendVO>> getList() {
         List<IndexRecommendVO> list = indexRecommendService.getList();
         return Result.ok(list);
-
     }
 }

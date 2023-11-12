@@ -15,19 +15,19 @@ import java.util.List;
 
 /**
  * <p>
- *  前端控制器
+ * 前端控制器
  * </p>
  *
  * @author zero
- * @since 2023-11-07
+ * @since 2023-11-11
  */
 @Tag(name = "分类管理")
 @RestController
 @RequestMapping("category")
 @AllArgsConstructor
 public class CategoryController {
-    private final CategoryService categoryService;
 
+    private final CategoryService categoryService;
 
     @GetMapping("index")
     @Operation(summary = "首页-商品分类")

@@ -11,6 +11,7 @@ import java.time.LocalDateTime;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -22,8 +23,7 @@ import lombok.Setter;
  * @author zero
  * @since 2023-11-07
  */
-@Getter
-@Setter
+@Data
 @TableName("t_user_shipping_address")
 @ApiModel(value = "UserShippingAddress对象", description = "")
 public class UserShoppingAddress {
