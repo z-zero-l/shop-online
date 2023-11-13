@@ -24,8 +24,8 @@ import lombok.Setter;
  * @since 2023-11-07
  */
 @Data
-@TableName("t_user_shipping_address")
-@ApiModel(value = "UserShippingAddress对象", description = "")
+@TableName("t_user_shopping_address")
+@ApiModel(value = "UserShoppingAddress对象", description = "")
 public class UserShoppingAddress {
 
     @ApiModelProperty("主键id")
