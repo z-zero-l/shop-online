@@ -22,14 +22,15 @@ import static com.shop.shoponline.common.utils.ObtainUserIdUtils.getUserId;
  * </p>
  *
  * @author zero
- * @since 2023-11-07
+ * @since 2023-11-12
  */
 @Tag(name = "地址管理")
 @RestController
 @RequestMapping("member")
 @AllArgsConstructor
 public class UserShoppingAddressController {
-    private final UserShoppingAddressService userShippingAddressService;
+
+    private final UserShoppingAddressService userShoppingAddressService;
     @Resource
     private HttpServletRequest request;
 
@@ -38,40 +39,48 @@ public class UserShoppingAddressController {
     public Result<Integer> saveAddress(@RequestBody @Validated AddressVO addressVO) {
         Integer userId = getUserId(request);
         addressVO.setUserId(userId);
-        Integer addressId = userShippingAddressService.saveShippingAddress(addressVO);
+        Integer addressId = userShoppingAddressService.saveShoppingAddress(addressVO);
         return Result.ok(addressId);
     }
 
     @Operation(summary = "修改收货地址")
     @PutMapping("address")
-    public Result<Integer> editAddress(@RequestBody @Validated AddressVO addressVO, HttpServletRequest request) {
+    public Result<Integer> editAddress(@RequestBody @Validated AddressVO addressVO) {
         if (addressVO.getId() == null) {
             throw new ServerException("请求参数不能为空");
         }
         addressVO.setUserId(getUserId(request));
-        Integer addressId = userShippingAddressService.editShippingAddress(addressVO);
+        Integer addressId = userShoppingAddressService.editShoppingAddress(addressVO);
         return Result.ok(addressId);
     }
 
     @Operation(summary = "获取收货地址")
     @GetMapping("address")
-    public Result<List<AddressVO>> getList(HttpServletRequest request) {
+    public Result<List<AddressVO>> getList() {
         Integer userId = getUserId(request);
-        List<AddressVO> list = userShippingAddressService.getList(userId);
+        List<AddressVO> list = userShoppingAddressService.getList(userId);
         return Result.ok(list);
     }
 
     @Operation(summary = "收货地址详情")
     @GetMapping("address/detail")
-    public Result<AddressVO> getAddress(@RequestParam Integer id, HttpServletRequest request) {
-        AddressVO addressVO = userShippingAddressService.getAddress(id);
+    public Result<AddressVO> getAddress(@RequestParam Integer id) {
+        if (id == null) {
+            throw new ServerException("请求参数不能为空");
+        }
+        Integer userId = getUserId(request);
+        AddressVO addressVO = userShoppingAddressService.getAddress(id, userId);
         return Result.ok(addressVO);
     }
 
     @Operation(summary = "删除收货地址")
     @DeleteMapping("address")
-    public Result<Integer> deleteAddress(@RequestParam Integer id, HttpServletRequest request) {
-        Integer integer = userShippingAddressService.deleteShippingAddress(id);
+    public Result<Integer> deleteAddress(@RequestParam Integer id) {
+        if (id == null) {
+            throw new ServerException("请求参数不能为空");
+        }
+        Integer userId = getUserId(request);
+        Integer integer = userShoppingAddressService.deleteShoppingAddress(id, userId);
         return Result.ok(integer);
     }
 

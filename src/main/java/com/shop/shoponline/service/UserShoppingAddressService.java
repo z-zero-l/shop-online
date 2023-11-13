@@ -12,7 +12,7 @@ import java.util.List;
  * </p>
  *
  * @author zero
- * @since 2023-11-07
+ * @since 2023-11-12
  */
 public interface UserShoppingAddressService extends IService<UserShoppingAddress> {
     /**
@@ -21,7 +21,7 @@ public interface UserShoppingAddressService extends IService<UserShoppingAddress
      * @param addressVO
      * @return Integer
      */
-    Integer saveShippingAddress(AddressVO addressVO);
+    Integer saveShoppingAddress(AddressVO addressVO);
 
     /**
      * 修改收货地址
@@ -29,7 +29,7 @@ public interface UserShoppingAddressService extends IService<UserShoppingAddress
      * @param addressVO
      * @return Integer
      */
-    Integer editShippingAddress(AddressVO addressVO);
+    Integer editShoppingAddress(AddressVO addressVO);
 
     /**
      * 获取收货地址
@@ -43,15 +43,17 @@ public interface UserShoppingAddressService extends IService<UserShoppingAddress
      * 收货地址详情
      *
      * @param id
+     * @param userId
      * @return AddressVO
      */
-    AddressVO getAddress(Integer id);
+    AddressVO getAddress(Integer id, Integer userId);
 
     /**
      * 删除收货地址
      *
      * @param id
+     * @param userId
      * @return Integer
      */
-    Integer deleteShippingAddress(Integer id);
+    Integer deleteShoppingAddress(Integer id, Integer userId);
 }
