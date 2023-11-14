@@ -53,7 +53,6 @@ public class UserShoppingCartController {
         return Result.ok(list);
     }
 
-    //    import com.shop.shoponline.query.EditCartQuery;
     @Operation(summary = "修改购物车单品")
     @PutMapping("edit")
     public Result<CartGoodsVO> editShopCart(@RequestBody @Validated EditCartQuery query) {
@@ -61,7 +60,6 @@ public class UserShoppingCartController {
         return Result.ok(goodsVO);
     }
 
-    //    import com.shop.shoponline.common.exception.ServerException;
     @Operation(summary = "删除/清空购物车单品")
     @DeleteMapping("remove")
     public Result removeShopCart(@RequestBody List<Integer> ids, HttpServletRequest request) {
