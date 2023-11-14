@@ -49,4 +49,11 @@ public interface UserShoppingCartService extends IService<UserShoppingCart> {
      */
     void removeCartGoods(Integer userId, List<Integer> ids);
 
+    /**
+     * 购物车全选/取消全选
+     *
+     * @param selected
+     * @param userId
+     */
+    void editCartSelected(Boolean selected, Integer userId);
 }
