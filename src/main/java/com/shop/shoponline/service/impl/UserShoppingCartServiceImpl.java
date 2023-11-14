@@ -9,9 +9,10 @@ import com.shop.shoponline.query.CartQuery;
 import com.shop.shoponline.service.UserShoppingCartService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.shop.shoponline.vo.CartGoodsVO;
-import com.shop.shoponline.vo.GoodsVO;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 /**
  * <p>
@@ -60,5 +61,10 @@ public class UserShoppingCartServiceImpl extends ServiceImpl<UserShoppingCartMap
         cartGoodsVO.setPicture(goods.getCover());
         cartGoodsVO.setDiscount(goods.getDiscount());
         return cartGoodsVO;
+    }
+
+    @Override
+    public List<CartGoodsVO> shopCartList(Integer userId) {
+        return baseMapper.getCartGoodsInfo(userId);
     }
 }

@@ -4,16 +4,32 @@
 
     <!-- 通用查询映射结果 -->
     <resultMap id="BaseResultMap" type="com.shop.shoponline.entity.UserShoppingCart">
-        <id column="id" property="id" />
-        <result column="user_id" property="userId" />
-        <result column="goods_id" property="goodsId" />
-        <result column="price" property="price" />
-        <result column="count" property="count" />
-        <result column="attrs_text" property="attrsText" />
-        <result column="selected" property="selected" />
-        <result column="delete_flag" property="deleteFlag" />
-        <result column="create_time" property="createTime" />
-        <result column="update_time" property="updateTime" />
+        <id column="id" property="id"/>
+        <result column="user_id" property="userId"/>
+        <result column="goods_id" property="goodsId"/>
+        <result column="price" property="price"/>
+        <result column="count" property="count"/>
+        <result column="attrs_text" property="attrsText"/>
+        <result column="selected" property="selected"/>
+        <result column="delete_flag" property="deleteFlag"/>
+        <result column="create_time" property="createTime"/>
+        <result column="update_time" property="updateTime"/>
     </resultMap>
 
+    <select id="getCartGoodsInfo" resultType="com.shop.shoponline.vo.CartGoodsVO">
+        select cart.id,
+               goods.name,
+               goods.cover     as picture,
+               cart.attrs_text,
+               cart.price,
+               goods.price     as nowPrice,
+               cart.selected,
+               goods.inventory as stock,
+               cart.count,
+               goods.discount
+        from t_user_shopping_cart as cart
+                 left join t_goods as goods on cart.goods_id = goods.id
+        where cart.delete_flag = 0
+          and cart.user_id = #{id}
+    </select>
 </mapper>
