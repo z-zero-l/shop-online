@@ -18,6 +18,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(getAuthorizationInterceptor())
                 .addPathPatterns("/user/profile/**")
-                .addPathPatterns("/member/**");
+                .addPathPatterns("/member/**")
+                .addPathPatterns("/cart/**");
     }
 }
