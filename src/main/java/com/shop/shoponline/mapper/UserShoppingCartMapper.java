@@ -16,6 +16,11 @@ import java.util.List;
  * @since 2023-11-14
  */
 public interface UserShoppingCartMapper extends BaseMapper<UserShoppingCart> {
-
+    /**
+     * 获取购物车信息
+     *
+     * @param id
+     * @return list
+     */
     List<CartGoodsVO> getCartGoodsInfo(@Param("id") Integer id);
 }
