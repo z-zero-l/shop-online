@@ -51,6 +51,7 @@ public class UserController {
     @PutMapping("/profile")
     private Result<UserVO> editUserInfo(HttpServletRequest request, @RequestBody @Validated UserVO userVO) {
         Integer userId = getUserId(request);
+        System.out.println(userId);
         userVO.setId(userId);
         UserVO userInfo = userService.editUserInfo(userVO);
         return Result.ok(userInfo);

@@ -6,7 +6,11 @@ import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableLogic;
 import com.baomidou.mybatisplus.annotation.TableName;
+
 import java.time.LocalDateTime;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.shop.shoponline.common.utils.DateUtils;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
@@ -14,7 +18,7 @@ import lombok.Setter;
 
 /**
  * <p>
- * 
+ *
  * </p>
  *
  * @author zero
@@ -77,9 +81,9 @@ public class User {
     @ApiModelProperty("区")
     @TableField("county_code")
     private String countyCode;
-
     @ApiModelProperty("生日")
     @TableField("birthday")
+    @JsonFormat(pattern = DateUtils.DATE_PATTERN)
     private LocalDateTime birthday;
 
     @ApiModelProperty("逻辑删除(0-未删除，1-已删除)")

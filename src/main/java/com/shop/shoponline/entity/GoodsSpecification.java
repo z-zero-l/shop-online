@@ -1,12 +1,17 @@
 package com.shop.shoponline.entity;
 
+import com.alibaba.fastjson2.JSONObject;
 import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableLogic;
 import com.baomidou.mybatisplus.annotation.TableName;
+
 import java.time.LocalDateTime;
+import java.util.List;
+
+import com.baomidou.mybatisplus.extension.handlers.JacksonTypeHandler;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
@@ -14,7 +19,7 @@ import lombok.Setter;
 
 /**
  * <p>
- * 
+ *
  * </p>
  *
  * @author zero
@@ -22,7 +27,7 @@ import lombok.Setter;
  */
 @Getter
 @Setter
-@TableName("t_goods_specification")
+@TableName(value = "t_goods_specification", autoResultMap = true)
 @ApiModel(value = "GoodsSpecification对象", description = "")
 public class GoodsSpecification {
 
@@ -39,8 +44,8 @@ public class GoodsSpecification {
     private String name;
 
     @ApiModelProperty("属性详情")
-    @TableField("value")
-    private String value;
+    @TableField(value = "value", typeHandler = JacksonTypeHandler.class)
+    private List<JSONObject> value;
 
     @ApiModelProperty("逻辑删除(0-未删除，1已删除)")
     @TableField("delete_flag")

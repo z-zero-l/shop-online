@@ -14,7 +14,7 @@ public class UserVO {
     @Schema(description = "登录token")
     private String token;
     @Schema(description = "主键id")
-    @NotNull(message = "用户Id 不能为空")
+//    @NotNull(message = "用户Id 不能为空")
     private Integer Id;
     @Schema(description = "用户手机号")
     private String mobile;

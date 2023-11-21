@@ -40,6 +40,7 @@ public class UserShoppingAddressServiceImpl extends ServiceImpl<UserShoppingAddr
                 throw new ServerException("已存在默认地址，请勿重复操作");
             }
         }
+        convert.setId(0);
         save(convert); // 实体对象插入
         return convert.getId();
     }
