@@ -11,8 +11,8 @@ spring:
     url: jdbc:mysql://127.0.0.1:3306/shop-online?useUnicode=true&characterEncoding=UTF-8&autoReconnect=true&serverTimezone=GMT%2B8
     #    url: jdbc:mysql://47.93.86.40:3306/shop-online?useUnicode=true&characterEncoding=UTF-8&autoReconnect=true&serverTimezone=GMT%2B8
     username: root
-    password: aaaaaa
-    #    password: root
+    #    password: aaaaaa
+    password: root
     hikari:
       connection-timeout: 30000       # 等待连接池分配的最大时长(毫秒)，超过这个时长还没可用的连接则发生SQLException,默认30秒
       minimum-idle: 5                 # 最小连接数
