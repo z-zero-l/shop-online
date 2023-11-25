@@ -1,5 +1,7 @@
 package com.shop.shoponline.service.impl;
 
+import com.alibaba.fastjson2.JSONArray;
+import com.alibaba.fastjson2.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.shop.shoponline.common.exception.ServerException;
@@ -435,6 +437,55 @@ public class UserOrderServiceImpl extends ServiceImpl<UserOrderMapper, UserOrder
         List<UserOrderGoods> goodsList = userOrderGoodsMapper.selectList(new LambdaQueryWrapper<UserOrderGoods>().eq(UserOrderGoods::getOrderId, userOrder.getId()));
         orderDetailVO.setSkus(goodsList);
         return orderDetailVO;
+    }
+
+    @Override
+    public OrderLogisticVO getOrderLogistics(Integer id) {
+        OrderLogisticVO orderLogisticVO = new OrderLogisticVO();
+        UserOrder userOrder = baseMapper.selectById(id);
+        if (userOrder == null) {
+            throw new ServerException("订单信息不存在");
+        }
+
+        if (userOrder.getStatus() != OrderStatusEnum.WAITING_FOR_DELIVERY.getValue() && userOrder.getStatus() != OrderStatusEnum.WAITING_FOR_REVIEW.getValue() && userOrder.getStatus() != OrderStatusEnum.COMPLETED.getValue()) {
+            throw new ServerException("暂时查询不到物流信息");
+        }
+
+        String logistics = "[{\n" +
+                "\t\t\"id\": \"1716355305111031810\",\n" +
+                "\t\t\"text\": \"小兔兔到了小福家里，请签收\"\n" +
+                "\t},\n" +
+                "\t{\n" +
+                "\t\t\"id\": \"1716355305106837507\",\n" +
+                "\t\t\"text\": \"小兔兔到了小熊站，小站正在赶往目的地\"\n" +
+                "\t},\n" +
+                "\t{\n" +
+                "\t\t\"id\": \"1716355305106837506\",\n" +
+                "\t\t\"text\": \"小兔兔到了小猴站，小站正在分发噢\"\n" +
+                "\t},\n" +
+                "\t{\n" +
+                "\t\t\"id\": \"1716355305102643201\",\n" +
+                "\t\t\"text\": \"小兔兔已经发货了\"\n" +
+                "\t}\n" +
+                "]";
+        List<LogisticItemVO> list = JSONArray.parseArray(logistics, LogisticItemVO.class);
+        orderLogisticVO.setCount(userOrder.getTotalCount());
+
+        JSONObject companyInfo = new JSONObject();
+        companyInfo.put("name", "哪李贵了物流速递");
+        companyInfo.put("number", "e0deadac-7189-477e-89f0-e7ca4753d139");
+        companyInfo.put("tel", "13813811778");
+        orderLogisticVO.setCompany(companyInfo);
+
+        int day = 4;
+        for (LogisticItemVO object : list) {
+            object.setTime(userOrder.getPayTime().plusDays(day));
+            day--;
+        }
+
+        orderLogisticVO.setList(list);
+
+        return orderLogisticVO;
     }
 
     public List<UserAddressVO> getAddressListByUserId(Integer userId, Integer addressId) {
