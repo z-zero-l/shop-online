@@ -4,6 +4,7 @@ import com.shop.shoponline.entity.UserOrder;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.shop.shoponline.entity.UserOrderGoods;
 import com.shop.shoponline.vo.OrderDetailVO;
+import com.shop.shoponline.vo.SubmitOrderVO;
 import com.shop.shoponline.vo.UserOrderVO;
 
 import java.util.List;
@@ -33,5 +34,11 @@ public interface UserOrderService extends IService<UserOrder> {
      */
     OrderDetailVO getOrderDetail(Integer id);
 
-
+    /**
+     * 填写订单-获取预付订单
+     *
+     * @param userId
+     * @return SubmitOrderVO
+     */
+    SubmitOrderVO getPreOrderDetail(Integer userId);
 }

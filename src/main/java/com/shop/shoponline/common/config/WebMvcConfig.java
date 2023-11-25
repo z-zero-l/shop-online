@@ -19,6 +19,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
         registry.addInterceptor(getAuthorizationInterceptor())
                 .addPathPatterns("/user/profile/**")
                 .addPathPatterns("/member/**")
-                .addPathPatterns("/cart/**");
+                .addPathPatterns("/cart/**")
+                .addPathPatterns("/order/**");
     }
 }

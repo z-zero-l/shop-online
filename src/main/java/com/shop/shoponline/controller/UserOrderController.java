@@ -5,6 +5,7 @@ import com.shop.shoponline.common.exception.ServerException;
 import com.shop.shoponline.common.result.Result;
 import com.shop.shoponline.service.UserOrderService;
 import com.shop.shoponline.vo.OrderDetailVO;
+import com.shop.shoponline.vo.SubmitOrderVO;
 import com.shop.shoponline.vo.UserOrderVO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -49,5 +50,14 @@ public class UserOrderController {
         OrderDetailVO orderDetail = userOrderService.getOrderDetail(id);
         return Result.ok(orderDetail);
     }
+
+    @Operation(summary = "填写订单 - 获取预付订单")
+    @GetMapping("pre")
+    public Result<SubmitOrderVO> getPreOrderDetail(HttpServletRequest request) {
+        Integer userId = getUserId(request);
+        SubmitOrderVO preOrderDetail = userOrderService.getPreOrderDetail(userId);
+        return Result.ok(preOrderDetail);
+    }
+
 
 }
