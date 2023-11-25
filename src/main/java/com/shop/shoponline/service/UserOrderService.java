@@ -4,6 +4,7 @@ import com.shop.shoponline.common.result.PageResult;
 import com.shop.shoponline.entity.UserOrder;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.shop.shoponline.entity.UserOrderGoods;
+import com.shop.shoponline.query.CancelGoodsQuery;
 import com.shop.shoponline.query.OrderPreQuery;
 import com.shop.shoponline.query.OrderQuery;
 import com.shop.shoponline.vo.OrderDetailVO;
@@ -68,4 +69,12 @@ public interface UserOrderService extends IService<UserOrder> {
      * @return PageResult
      */
     PageResult<OrderDetailVO> getOrderList(OrderQuery query);
+
+    /**
+     * 取消订单
+     *
+     * @param query
+     * @return OrderDetailVO
+     */
+    OrderDetailVO cancelOrder(CancelGoodsQuery query);
 }
