@@ -376,8 +376,23 @@ public class UserOrderServiceImpl extends ServiceImpl<UserOrderMapper, UserOrder
         for (UserOrder userOrder : list) {
             userOrderGoodsMapper.delete(new LambdaQueryWrapper<UserOrderGoods>().eq(UserOrderGoods::getOrderId, userOrder.getId()));
         }
-
     }
+
+
+    @Override
+    public void consignOrder(Integer id) {
+        UserOrder userOrder = baseMapper.selectById(id);
+        if (userOrder == null) {
+            throw new ServerException("订单不存在");
+        }
+        if (!userOrder.getStatus().equals(OrderStatusEnum.WAITING_FOR_SHIPMENT.getValue())) {
+            throw new ServerException("订单已发货");
+        }
+        userOrder.setStatus(OrderStatusEnum.WAITING_FOR_DELIVERY.getValue());
+        userOrder.setConsignTime(LocalDateTime.now());
+        baseMapper.updateById(userOrder);
+    }
+
 
     public List<UserAddressVO> getAddressListByUserId(Integer userId, Integer addressId) {
         // 1. 根据用户id查询该用户的收货地址列表
