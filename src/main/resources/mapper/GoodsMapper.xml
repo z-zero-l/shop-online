@@ -4,23 +4,39 @@
 
     <!-- 通用查询映射结果 -->
     <resultMap id="BaseResultMap" type="com.shop.shoponline.entity.Goods">
-        <id column="id" property="id" />
-        <result column="price" property="price" />
-        <result column="old_price" property="oldPrice" />
-        <result column="cover" property="cover" />
-        <result column="category_id" property="categoryId" />
-        <result column="tab_id" property="tabId" />
-        <result column="name" property="name" />
-        <result column="description" property="description" />
-        <result column="inventory" property="inventory" />
-        <result column="discount" property="discount" />
-        <result column="sales_count" property="salesCount" />
-        <result column="freight" property="freight" />
-        <result column="main_pictures" property="mainPictures" />
-        <result column="product_pictures" property="productPictures" />
-        <result column="delete_flag" property="deleteFlag" />
-        <result column="create_time" property="createTime" />
-        <result column="update_time" property="updateTime" />
+        <id column="id" property="id"/>
+        <result column="price" property="price"/>
+        <result column="old_price" property="oldPrice"/>
+        <result column="cover" property="cover"/>
+        <result column="category_id" property="categoryId"/>
+        <result column="tab_id" property="tabId"/>
+        <result column="name" property="name"/>
+        <result column="description" property="description"/>
+        <result column="inventory" property="inventory"/>
+        <result column="discount" property="discount"/>
+        <result column="sales_count" property="salesCount"/>
+        <result column="freight" property="freight"/>
+        <result column="main_pictures" property="mainPictures"/>
+        <result column="product_pictures" property="productPictures"/>
+        <result column="delete_flag" property="deleteFlag"/>
+        <result column="create_time" property="createTime"/>
+        <result column="update_time" property="updateTime"/>
     </resultMap>
 
+    <select id="getGoodsListByOrderId" resultType="com.shop.shoponline.vo.UserOrderGoodsVO">
+        select goods.id,
+               goods.price,
+               goods.cover,
+               goods.name,
+               goods.cover                 as picture,
+               orderG.count,
+               orderG.attrs_text,
+               orderG.price                as payPrice,
+               goods.price * orderG.count  as totalPrice,
+               orderG.price * orderG.count as totalPayPrice
+        from t_goods as goods
+                 left join t_user_order_goods as orderG on orderG.goods_id = goods.id and goods.delete_flag = 0
+        where orderG.order_id = #{id}
+          and orderG.delete_flag = 0
+    </select>
 </mapper>

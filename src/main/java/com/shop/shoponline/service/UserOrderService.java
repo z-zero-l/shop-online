@@ -50,4 +50,12 @@ public interface UserOrderService extends IService<UserOrder> {
      * @return SubmitOrderVO
      */
     SubmitOrderVO getPreNowOrderDetail(OrderPreQuery orderPreQuery);
+
+    /**
+     * 填写订单-再次购买
+     *
+     * @param id
+     * @return SubmitOrderVO
+     */
+    SubmitOrderVO getRepurchaseOrderDetail(Integer id);
 }

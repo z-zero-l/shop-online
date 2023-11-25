@@ -266,6 +266,28 @@ public class UserOrderServiceImpl extends ServiceImpl<UserOrderMapper, UserOrder
         return submitOrderVO;
     }
 
+    @Override
+    public SubmitOrderVO getRepurchaseOrderDetail(Integer id) {
+        SubmitOrderVO submitOrderVO = new SubmitOrderVO();
+        // 1. 根据订单id查询订单信息获取 用户信息和地址
+        UserOrder userOrder = baseMapper.selectById(id);
+        // 2. 查询用户收货地址信息
+        List<UserAddressVO> addressList = getAddressListByUserId(userOrder.getUserId(), userOrder.getAddressId());
+        // 3. 商品信息
+        List<UserOrderGoodsVO> goodsList = goodsMapper.getGoodsListByOrderId(id);
+        // 4. 综述信息
+        OrderInfoVO orderInfoVO = new OrderInfoVO();
+        orderInfoVO.setGoodsCount(userOrder.getTotalCount());
+        orderInfoVO.setTotalPrice(userOrder.getTotalPrice());
+        orderInfoVO.setPostFee(userOrder.getTotalFreight());
+        orderInfoVO.setTotalPayPrice(userOrder.getTotalPrice());
+        orderInfoVO.setDiscountPrice(0.00);
+        submitOrderVO.setUserAddresses(addressList);
+        submitOrderVO.setGoods(goodsList);
+        submitOrderVO.setSummary(orderInfoVO);
+        return submitOrderVO;
+    }
+
     public List<UserAddressVO> getAddressListByUserId(Integer userId, Integer addressId) {
         // 1. 根据用户id查询该用户的收货地址列表
         List<UserShoppingAddress> list = userShoppingAddressMapper.selectList(new LambdaQueryWrapper<UserShoppingAddress>().eq(UserShoppingAddress::getUserId, userId));
