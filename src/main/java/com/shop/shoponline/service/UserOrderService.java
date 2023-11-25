@@ -1,9 +1,11 @@
 package com.shop.shoponline.service;
 
+import com.shop.shoponline.common.result.PageResult;
 import com.shop.shoponline.entity.UserOrder;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.shop.shoponline.entity.UserOrderGoods;
 import com.shop.shoponline.query.OrderPreQuery;
+import com.shop.shoponline.query.OrderQuery;
 import com.shop.shoponline.vo.OrderDetailVO;
 import com.shop.shoponline.vo.SubmitOrderVO;
 import com.shop.shoponline.vo.UserOrderVO;
@@ -58,4 +60,12 @@ public interface UserOrderService extends IService<UserOrder> {
      * @return SubmitOrderVO
      */
     SubmitOrderVO getRepurchaseOrderDetail(Integer id);
+
+    /**
+     * 订单列表
+     *
+     * @param query
+     * @return PageResult
+     */
+    PageResult<OrderDetailVO> getOrderList(OrderQuery query);
 }
