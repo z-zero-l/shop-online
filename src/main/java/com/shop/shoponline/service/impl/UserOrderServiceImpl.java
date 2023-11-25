@@ -10,6 +10,7 @@ import com.shop.shoponline.entity.*;
 import com.shop.shoponline.enums.OrderStatusEnum;
 import com.shop.shoponline.mapper.*;
 import com.shop.shoponline.query.OrderGoodsQuery;
+import com.shop.shoponline.query.OrderPreQuery;
 import com.shop.shoponline.service.UserOrderGoodsService;
 import com.shop.shoponline.service.UserOrderService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -216,6 +217,48 @@ public class UserOrderServiceImpl extends ServiceImpl<UserOrderMapper, UserOrder
         orderInfoVO.setTotalPayPrice(totalPayPrice.doubleValue());
         orderInfoVO.setTotalPrice(totalPrice.doubleValue());
         orderInfoVO.setPostFee(totalFreight.doubleValue());
+
+        submitOrderVO.setUserAddresses(addressList);
+        submitOrderVO.setGoods(goodsList);
+        submitOrderVO.setSummary(orderInfoVO);
+        return submitOrderVO;
+    }
+
+    @Override
+    public SubmitOrderVO getPreNowOrderDetail(OrderPreQuery orderPreQuery) {
+        SubmitOrderVO submitOrderVO = new SubmitOrderVO();
+        // 1. 查询用户收货地址列表
+        List<UserAddressVO> addressList = getAddressListByUserId(orderPreQuery.getUserId(), orderPreQuery.getAddressId());
+        List<UserOrderGoodsVO> goodsList = new ArrayList<>();
+        // 2. 商品信息
+        Goods goods = goodsMapper.selectById(orderPreQuery.getId());
+        if (goods == null) {
+            throw new ServerException("商品信息不存在");
+        }
+        if (orderPreQuery.getCount() > goods.getInventory()) {
+            throw new ServerException(goods.getName() + "库存数量不足");
+        }
+        UserOrderGoodsVO userOrderGoodsVO = new UserOrderGoodsVO();
+        userOrderGoodsVO.setId(goods.getId());
+        userOrderGoodsVO.setName(goods.getName());
+        userOrderGoodsVO.setPicture(goods.getCover());
+        userOrderGoodsVO.setCount(orderPreQuery.getCount());
+        userOrderGoodsVO.setAttrsText(orderPreQuery.getAttrsText());
+        userOrderGoodsVO.setPrice(goods.getOldPrice());
+        userOrderGoodsVO.setPayPrice(goods.getPrice());
+        BigDecimal freight = new BigDecimal(goods.getFreight().toString());
+        BigDecimal count = new BigDecimal(orderPreQuery.getCount().toString());
+        BigDecimal price = new BigDecimal(goods.getPrice().toString());
+        userOrderGoodsVO.setTotalPrice(price.multiply(count).add(freight).doubleValue());
+        userOrderGoodsVO.setTotalPayPrice(userOrderGoodsVO.getTotalPrice());
+        goodsList.add(userOrderGoodsVO);
+        // 3. 费用综述信息
+        OrderInfoVO orderInfoVO = new OrderInfoVO();
+        orderInfoVO.setGoodsCount(orderPreQuery.getCount());
+        orderInfoVO.setTotalPayPrice(userOrderGoodsVO.getTotalPayPrice());
+        orderInfoVO.setTotalPrice(userOrderGoodsVO.getTotalPrice());
+        orderInfoVO.setPostFee(goods.getFreight());
+        orderInfoVO.setDiscountPrice((goods.getDiscount()));
 
         submitOrderVO.setUserAddresses(addressList);
         submitOrderVO.setGoods(goodsList);
