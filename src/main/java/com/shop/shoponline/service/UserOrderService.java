@@ -91,4 +91,11 @@ public interface UserOrderService extends IService<UserOrder> {
      * @param id
      */
     void consignOrder(Integer id);
+
+    /**
+     * 订单支付
+     *
+     * @param id
+     */
+    void payOrder(Integer id);
 }
