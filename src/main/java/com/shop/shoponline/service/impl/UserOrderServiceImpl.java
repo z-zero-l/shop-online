@@ -356,6 +356,29 @@ public class UserOrderServiceImpl extends ServiceImpl<UserOrderMapper, UserOrder
         return orderDetailVO;
     }
 
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public void deleteOrder(List<Integer> ids, Integer userId) {
+        // 仅在订单状态为 待评价、已完成、已取消时，可删除订单
+        LambdaQueryWrapper<UserOrder> wrapper = new LambdaQueryWrapper<>();
+        wrapper.eq(UserOrder::getUserId, userId);
+        wrapper.eq(UserOrder::getStatus, OrderStatusEnum.WAITING_FOR_REVIEW.getValue()).or().eq(UserOrder::getStatus, OrderStatusEnum.COMPLETED.getValue()).or().eq(UserOrder::getStatus, OrderStatusEnum.CANCELLED.getValue());
+        List<UserOrder> userOrders = baseMapper.selectList(wrapper);
+        // 将查询到的订单和要删除的订单列表取交集，避免误删订单
+        List<UserOrder> list = userOrders.stream().filter(item -> ids.contains(item.getId())).collect(Collectors.toList());
+        // 当可删除的订单集合长度为0时，抛出暂无可删除订单的异常
+        if (list.size() == 0) {
+            throw new ServerException("暂无可以删除的订单");
+        }
+        // 删除订单信息
+        removeByIds(list);
+        // 删除购买的商品信息
+        for (UserOrder userOrder : list) {
+            userOrderGoodsMapper.delete(new LambdaQueryWrapper<UserOrderGoods>().eq(UserOrderGoods::getOrderId, userOrder.getId()));
+        }
+
+    }
+
     public List<UserAddressVO> getAddressListByUserId(Integer userId, Integer addressId) {
         // 1. 根据用户id查询该用户的收货地址列表
         List<UserShoppingAddress> list = userShoppingAddressMapper.selectList(new LambdaQueryWrapper<UserShoppingAddress>().eq(UserShoppingAddress::getUserId, userId));
