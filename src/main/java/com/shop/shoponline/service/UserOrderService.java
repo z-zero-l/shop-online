@@ -3,6 +3,7 @@ package com.shop.shoponline.service;
 import com.shop.shoponline.entity.UserOrder;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.shop.shoponline.entity.UserOrderGoods;
+import com.shop.shoponline.vo.OrderDetailVO;
 import com.shop.shoponline.vo.UserOrderVO;
 
 import java.util.List;
@@ -13,7 +14,7 @@ import java.util.List;
  * </p>
  *
  * @author zero
- * @since 2023-11-07
+ * @since 2023-11-25
  */
 public interface UserOrderService extends IService<UserOrder> {
     /**
@@ -23,6 +24,14 @@ public interface UserOrderService extends IService<UserOrder> {
      * @return Integer
      */
     Integer addGoodsOrder(UserOrderVO orderVO);
+
+    /**
+     * 获取订单详情
+     *
+     * @param id
+     * @return OrderDetailVO
+     */
+    OrderDetailVO getOrderDetail(Integer id);
 
 
 }
