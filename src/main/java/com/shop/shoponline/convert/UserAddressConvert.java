@@ -12,9 +12,7 @@ public interface UserAddressConvert {
 
     UserAddressConvert INSTANCE = Mappers.getMapper(UserAddressConvert.class);
 
-
     UserAddressVO convertToUserAddressVO(UserShoppingAddress userShippingAddress);
-
 
     List<UserAddressVO> convertToUserAddressVOList(List<UserShoppingAddress> list);
 }

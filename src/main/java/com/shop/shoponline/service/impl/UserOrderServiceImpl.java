@@ -2,12 +2,15 @@ package com.shop.shoponline.service.impl;
 
 import com.alibaba.fastjson2.JSONArray;
 import com.alibaba.fastjson2.JSONObject;
+
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+
 import com.shop.shoponline.common.exception.ServerException;
 import com.shop.shoponline.common.result.PageResult;
 import com.shop.shoponline.convert.UserAddressConvert;
 import com.shop.shoponline.convert.UserOrderDetailConvert;
+
 import com.shop.shoponline.entity.*;
 import com.shop.shoponline.enums.OrderStatusEnum;
 import com.shop.shoponline.mapper.*;
@@ -325,7 +328,6 @@ public class UserOrderServiceImpl extends ServiceImpl<UserOrderMapper, UserOrder
             list.add(orderDetailVO);
         }
         return new PageResult<>(page.getTotal(), query.getPageSize(), query.getPage(), page.getPages(), list);
-
     }
 
     @Override
@@ -413,7 +415,7 @@ public class UserOrderServiceImpl extends ServiceImpl<UserOrderMapper, UserOrder
 
     @Override
     public OrderDetailVO receiptOrder(Integer id) {
-//        1、查询订单信息，只有待收货状态才能修改订单状态
+        // 1、查询订单信息，只有待收货状态才能修改订单状态
         UserOrder userOrder = baseMapper.selectById(id);
         if (userOrder == null) {
             throw new ServerException("订单不存在");
@@ -422,18 +424,18 @@ public class UserOrderServiceImpl extends ServiceImpl<UserOrderMapper, UserOrder
             throw new ServerException("暂时不能确认收货");
         }
         userOrder.setStatus(OrderStatusEnum.WAITING_FOR_REVIEW.getValue());
-//        2、修改订单交易完成时间
+        // 2、修改订单交易完成时间
         userOrder.setEndTime(LocalDateTime.now());
         baseMapper.updateById(userOrder);
         OrderDetailVO orderDetailVO = UserOrderDetailConvert.INSTANCE.convertToOrderDetailVO(userOrder);
-//        3、根据订单信息查询收货地址信息
+        // 3、根据订单信息查询收货地址信息
         UserShoppingAddress userShippingAddress = userShoppingAddressMapper.selectById(userOrder.getAddressId());
         if (userShippingAddress != null) {
             orderDetailVO.setReceiverContact(userShippingAddress.getReceiver());
             orderDetailVO.setReceiverAddress(userShippingAddress.getAddress());
             orderDetailVO.setReceiverMobile(userShippingAddress.getContact());
         }
-//        4、查询订单包含的商品信息返回给客户端
+        // 4、查询订单包含的商品信息返回给客户端
         List<UserOrderGoods> goodsList = userOrderGoodsMapper.selectList(new LambdaQueryWrapper<UserOrderGoods>().eq(UserOrderGoods::getOrderId, userOrder.getId()));
         orderDetailVO.setSkus(goodsList);
         return orderDetailVO;
@@ -446,11 +448,9 @@ public class UserOrderServiceImpl extends ServiceImpl<UserOrderMapper, UserOrder
         if (userOrder == null) {
             throw new ServerException("订单信息不存在");
         }
-
         if (userOrder.getStatus() != OrderStatusEnum.WAITING_FOR_DELIVERY.getValue() && userOrder.getStatus() != OrderStatusEnum.WAITING_FOR_REVIEW.getValue() && userOrder.getStatus() != OrderStatusEnum.COMPLETED.getValue()) {
             throw new ServerException("暂时查询不到物流信息");
         }
-
         String logistics = "[{\n" +
                 "\t\t\"id\": \"1716355305111031810\",\n" +
                 "\t\t\"text\": \"小兔兔到了小福家里，请签收\"\n" +
@@ -482,9 +482,7 @@ public class UserOrderServiceImpl extends ServiceImpl<UserOrderMapper, UserOrder
             object.setTime(userOrder.getPayTime().plusDays(day));
             day--;
         }
-
         orderLogisticVO.setList(list);
-
         return orderLogisticVO;
     }
 

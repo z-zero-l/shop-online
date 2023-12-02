@@ -1,9 +1,9 @@
 package com.shop.shoponline.service;
 
 import com.shop.shoponline.common.result.PageResult;
+
 import com.shop.shoponline.entity.UserOrder;
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.shop.shoponline.entity.UserOrderGoods;
 import com.shop.shoponline.query.CancelGoodsQuery;
 import com.shop.shoponline.query.OrderPreQuery;
 import com.shop.shoponline.query.OrderQuery;
@@ -87,18 +87,18 @@ public interface UserOrderService extends IService<UserOrder> {
     void deleteOrder(List<Integer> ids, Integer userId);
 
     /**
-     * 模拟发货
-     *
-     * @param id
-     */
-    void consignOrder(Integer id);
-
-    /**
      * 订单支付
      *
      * @param id
      */
     void payOrder(Integer id);
+
+    /**
+     * 模拟发货
+     *
+     * @param id
+     */
+    void consignOrder(Integer id);
 
     /**
      * 确认收货

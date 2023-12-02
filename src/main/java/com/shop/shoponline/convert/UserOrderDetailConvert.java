@@ -13,6 +13,4 @@ public interface UserOrderDetailConvert {
     OrderDetailVO convertToDetailVO(UserOrder userOrder);
 
     OrderDetailVO convertToOrderDetailVO(UserOrder userOrder);
-
-
 }
